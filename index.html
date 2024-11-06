@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Login Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    .login-container {
+      max-width: 400px;
+      width: 100%;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .login-container h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .login-container p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #666;
+    }
+    .role-select {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+.role-option {
+  flex: 1;
+  padding: 10px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #ffffff; 
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  text-align: center;
+}
+.role-option.active {
+  background-color: #0e024e; 
+  color: #fff; 
+}
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 10px 40px 10px 10px; 
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+    .password-container .show-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #555;
+    }
+    .login-options {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #555;
+      margin: 10px 0;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background-color: #f79a0e;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .login-container button:hover {
+      background-color:#0e024e;
+      
+    }
+    .guest-signup-buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    .guest-signup-buttons button {
+      width: 48%;
+      background-color: #ddd;
+      color: #333;
+      font-size: 11px;
+      
+    }
+    .guest-signup-buttons button:hover{
+        color: white;
+    }
+    .error {
+      color: red;
+      font-size: 12px;
+      text-align: left;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1 style="color: blue;">WELCOME BACK</h1>
+    <p style="color:#0e024e;">Login to your CTRM application account</p>
+
+    <div class="role-select">
+        <div id="adminRole" class="role-option" onclick="selectRole('System Admin')">System Admin</div>
+        <div id="userRole" class="role-option" onclick="selectRole('Business User')">Business User</div>
+      </div>
+      <input type="hidden" id="role" value="">
+
+  
+
+    <input type="text" id="email" placeholder="Email">
+    <span id="emailError" class="error">Please enter your email</span>
+
+    
+    <div class="password-container">
+      <input type="password" id="password" placeholder="Password">
+      <i class="fas fa-eye-slash show-password" onclick="togglePassword()" id="togglePassword"></i>
+    </div>
+    <span id="passwordError" class="error">Please enter your password</span>
+
+    <div class="login-options">
+      <label><input type="checkbox"> Keep me logged in</label>
+      <a href="#">Forgot password?</a>
+    </div>
+
+    <button onclick="validateLogin()">Login</button>
+
+    <div class="guest-signup-buttons">
+      <button>Login as Guest Account</button>
+      <button>Not a customer yet? Sign up</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedRole = '';
+
+    function selectRole(role) {
+    selectedRole = role;
+    document.getElementById('role').value = role;
+
+    
+    document.getElementById('adminRole').classList.toggle('active', role === 'System Admin');
+    document.getElementById('userRole').classList.toggle('active', role === 'Business User');
+  }
+   
+    function togglePassword() {
+  const passwordInput = document.getElementById('password');
+  const toggleIcon = document.getElementById('togglePassword');
+
+  if (passwordInput.type === 'password') {
+  
+    passwordInput.type = 'text';
+    toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+  } else {
+    
+    passwordInput.type = 'password';
+    toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+  }
+}
+
+
+function validateLogin() {
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const emailError = document.getElementById('emailError');
+  const passwordError = document.getElementById('passwordError');
+  const keepMeLoggedIn = document.querySelector('input[type="checkbox"]'); // Select the checkbox
+
+  let isValid = true;
+
+
+  if (!email.value.trim()) {
+    emailError.style.display = 'block';
+    isValid = false;
+  } else {
+    emailError.style.display = 'none';
+  }
+
+  if (!password.value.trim()) {
+    passwordError.style.display = 'block';
+    isValid = false;
+  } else {
+    passwordError.style.display = 'none';
+  }
+
+  
+  if (!selectedRole) {
+    alert("Please select a role.");
+    isValid = false;
+  }
+
+
+  if (isValid) {
+    alert("Login successful");
+
+    
+    email.value = '';
+    password.value = '';
+    document.getElementById('role').value = '';
+
+   
+    document.getElementById('adminRole').classList.remove('active');
+    document.getElementById('userRole').classList.remove('active');
+    selectedRole = '';
+
+    
+    keepMeLoggedIn.checked = false;
+  }
+}
+
+
+  </script>
+</body>
+</html>
